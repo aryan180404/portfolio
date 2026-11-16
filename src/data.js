@@ -16,10 +16,9 @@ export const me = {
   linkedin: 'https://www.linkedin.com/in/aryan180404',
   github: 'https://github.com/aryan180404',
   languages: 'English, Hindi, Marathi',
-  // Contact form → your inbox. Get a free access key at https://web3forms.com
-  // (enter aryan180404@gmail.com, the key arrives by email) and paste it here.
-  // Left empty, the form opens the visitor's mail app instead.
-  contactFormKey: '',
+  // Contact form → your inbox via Formspree (same form as Kelvin Forward's site).
+  // To use a separate form, create one at formspree.io and paste its endpoint here.
+  formEndpoint: 'https://formspree.io/f/mbgodznz',
 }
 
 export const projects = [

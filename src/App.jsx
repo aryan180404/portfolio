@@ -334,21 +334,20 @@ function ContactForm() {
     e.preventDefault()
     const form = e.currentTarget
     const data = Object.fromEntries(new FormData(form))
-    if (data.botcheck) return
-    if (!me.contactFormKey) {
+    if (data._gotcha) return
+    if (!me.formEndpoint) {
       const body = `${data.message}\n\n— ${data.name} (${data.email})`
       window.location.href = `mailto:${me.emailPrimary}?subject=${encodeURIComponent(`Portfolio: hello from ${data.name}`)}&body=${encodeURIComponent(body)}`
       return
     }
     setStatus('sending')
     try {
-      const res = await fetch('https://api.web3forms.com/submit', {
+      const res = await fetch(me.formEndpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ access_key: me.contactFormKey, subject: `Portfolio: message from ${data.name}`, from_name: 'Portfolio contact form', replyto: data.email, ...data }),
+        body: JSON.stringify({ name: data.name, email: data.email, message: data.message, _subject: `Portfolio: message from ${data.name}`, _replyto: data.email, source: 'Portfolio site' }),
       })
-      const json = await res.json()
-      if (!json.success) throw new Error(json.message)
+      if (!res.ok) throw new Error(String(res.status))
       setStatus('sent'); form.reset()
     } catch { setStatus('error') }
   }
@@ -359,7 +358,7 @@ function ContactForm() {
         <label><span>Your email</span><input name="email" type="email" required autoComplete="email" /></label>
       </div>
       <label><span>Message</span><textarea name="message" rows="4" required /></label>
-      <input type="checkbox" name="botcheck" className="hp" tabIndex="-1" autoComplete="off" aria-hidden="true" />
+      <input type="checkbox" name="_gotcha" className="hp" tabIndex="-1" autoComplete="off" aria-hidden="true" />
       <div className="form-foot">
         <button type="submit" className="btn-outline" disabled={status === 'sending'}>
           {status === 'sending' ? 'Sending…' : 'Send message'} <Arrow />

@@ -13,12 +13,9 @@ All text, links, projects, internships, awards and certificates live in **`src/d
 - Decks: `public/decks/` (Kelvin Forward pitch, VoC Copilot deck). Code maps: `public/maps/`.
 
 ## Contact form → your Gmail
-The "Let's talk" form sends messages to your inbox through Web3Forms (free, no backend).
-1. Go to https://web3forms.com, enter `aryan180404@gmail.com`, and click **Create Access Key**.
-2. Copy the key from the email they send you.
-3. Paste it into `contactFormKey` in `src/data.js`, then commit. Vercel redeploys on its own.
+The "Let's talk" form posts to Formspree (`formEndpoint` in `src/data.js`), the same Formspree form Kelvin Forward's site uses, so submissions land in the inbox that form forwards to. Each one arrives with the subject "Portfolio: message from <name>" so you can tell them apart.
 
-Until a key is set, the form opens the visitor's mail app with the message pre-filled, addressed to you.
+Want portfolio messages on their own form? Create a new form at formspree.io with `aryan180404@gmail.com`, then paste its endpoint into `formEndpoint`. If `formEndpoint` is empty, the form falls back to opening the visitor's mail app.
 
 ## Develop / rebuild
 ```bash
