@@ -137,7 +137,7 @@ function Header() {
               {label}{id === 'work' && <sup>({String(projects.length).padStart(2, '0')})</sup>}
             </a>
           ))}
-          <a href={me.resume} download="Aryan-Agarwal-Resume.pdf" className="nav-link nav-resume">R&eacute;sum&eacute; <Arrow dir="download" size={16} /></a>
+          <a href={me.resume} download="Aryan-Agarwal-Resume.pdf" className="nav-link nav-resume">Resume <Arrow dir="download" size={16} /></a>
           <a href="#contact" className={`btn-outline ${active === 'contact' ? 'is-active' : ''}`}>Let&rsquo;s talk <Arrow /></a>
         </nav>
       </div>
@@ -167,7 +167,7 @@ function Hero() {
         </p>
         <div className="hero-ctas">
           <a href="#work" className="link-under">See the work <Arrow /></a>
-          <a href={me.resume} download="Aryan-Agarwal-Resume.pdf" className="btn-solid">Download r&eacute;sum&eacute; <Arrow dir="download" /></a>
+          <a href={me.resume} download="Aryan-Agarwal-Resume.pdf" className="btn-solid">Download resume <Arrow dir="download" /></a>
         </div>
         <a href="#work" className="scroll-cue"><span>Scroll to explore</span><i><Arrow dir="down" size={22} /></i></a>
       </div>
@@ -399,7 +399,7 @@ function Contact() {
             <button className="copy" onClick={copy} aria-live="polite">{copied ? 'Copied' : 'Copy'}</button>
           </li>
           <li><span className="muted">College</span><a href={`mailto:${me.emailCollege}`}>{me.emailCollege}</a></li>
-          <li><span className="muted">R&eacute;sum&eacute;</span><a href={me.resume} download="Aryan-Agarwal-Resume.pdf">Download PDF <Arrow dir="download" size={15} /></a></li>
+          <li><span className="muted">Resume</span><a href={me.resume} download="Aryan-Agarwal-Resume.pdf">Download PDF <Arrow dir="download" size={15} /></a></li>
           <li><span className="muted">Phone</span><a href={me.phoneHref}>{me.phone}</a></li>
           <li><span className="muted">LinkedIn</span><L href={me.linkedin}>in/aryan180404 <Arrow size={15} /></L></li>
           <li><span className="muted">GitHub</span><L href={me.github}>aryan180404 <Arrow size={15} /></L></li>
