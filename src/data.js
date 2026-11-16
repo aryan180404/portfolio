@@ -80,7 +80,7 @@ export const projects = [
     shot: './shots/medsetu.jpg',
     oneLiner: 'An Arduino ECG that streams a clean heartbeat to the browser in real time.',
     detail:
-      'An ECG prototype with careful grounding for high-fidelity ADC readings, EMF/EMI mitigation, a Python script streaming live data over the web, and a frontend for doctors and patients. Tested with 8–10 users.',
+      'An ECG prototype with careful grounding for high-fidelity ADC readings, EMF/EMI mitigation, a Python script streaming live data over the web, and a dashboard that draws the trace live with AI-written readings. Tested with 8–10 users.',
     tags: ['Arduino', 'Electronics', 'Data streaming', 'Web'],
     links: [
       { label: 'Project site', href: 'https://medsetuecg.vercel.app' },
