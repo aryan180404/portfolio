@@ -22,6 +22,7 @@ export const projects = [
   {
     id: 'kelvin',
     name: 'Kelvin Forward',
+    logo: './logos/kelvin-forward-mark.svg',
     kind: 'Founder',
     year: '2026 — now',
     shot: './shots/kelvin.jpg',
@@ -112,21 +113,21 @@ export const experience = [
   },
   {
     org: 'Tech Mahindra',
-    logo: './logos/techm.svg',
+    logo: './logos/techm.png',
     role: 'Python Intern',
     when: 'May — Jul 2025',
     what: 'Wrote Python scripts automating customer registration across four core services for Rogers Communications, Canada, taking manual data entry off a ten-person operations team.',
   },
   {
-    org: 'Indian Space Lab · ISRO, DRDO & NASA faculty',
+    org: 'ISRO',
     logo: './logos/isro.svg',
     role: 'Research Intern',
     when: 'Jun — Aug 2025',
-    what: 'Supported a disaster-response drone project with CAD modelling, weight distribution and structural feasibility planning.',
+    what: 'Indian Space Lab programme taught by ISRO, DRDO and NASA faculty. Supported a disaster-response drone project with CAD modelling, weight distribution and structural feasibility planning.',
   },
   {
     org: 'Tech Mahindra Foundation',
-    logo: './logos/techm.svg',
+    logo: './logos/techm-foundation.png',
     role: 'Team Lead Intern',
     when: 'Apr — May 2024',
     what: 'Led three volunteers across education and welfare drives that reached 100+ children.',
@@ -152,8 +153,8 @@ export const awards = [
 
 // Add a verifyUrl to make a certificate clickable.
 export const certificates = [
-  { name: 'Product Management', issuer: 'IBM · Coursera', when: 'June 2026', verifyUrl: '' },
-  { name: 'Google Data Analytics', issuer: 'Google · Coursera', when: 'June 2026', verifyUrl: '' },
+  { name: 'Product Management', issuer: 'IBM · Coursera', when: 'June 2026', logo: './logos/ibm.png', verifyUrl: '' },
+  { name: 'Google Data Analytics', issuer: 'Google · Coursera', when: 'June 2026', logo: './logos/google.png', verifyUrl: '' },
 ]
 
 export const skills = ['Python', 'SQL', 'Machine learning', 'Pandas', 'NumPy', 'scikit-learn', 'Tableau', 'Data cleaning', 'Jupyter', 'MS Office', 'Stakeholder management', 'Client communication', 'Project management']

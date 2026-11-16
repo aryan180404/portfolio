@@ -62,18 +62,19 @@ function useMotion() {
       gsap.to('.sticker', { yPercent: -45, rotate: 2, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } })
       gsap.to('.hero-title', { yPercent: 18, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } })
 
-      // Marquee: base drift plus scroll velocity.
-      const track = document.querySelector('.marquee-track')
-      if (track) {
-        const tween = gsap.to(track, { xPercent: -50, duration: 38, ease: 'none', repeat: -1 })
-        ScrollTrigger.create({
-          onUpdate: (self) => {
-            const v = gsap.utils.clamp(-6, 6, self.getVelocity() / 300)
-            gsap.to(tween, { timeScale: 1 + Math.abs(v), duration: 0.3, overwrite: true })
-            gsap.to(tween, { timeScale: 1, duration: 1.2, delay: 0.3 })
-          },
-        })
-      }
+      // Section headings rise from below a mask.
+      gsap.utils.toArray('.work-head').forEach((el) => {
+        gsap.from(el, { y: 60, opacity: 0, duration: 1.2, ease, scrollTrigger: { trigger: el, start: 'top 90%', once: true } })
+      })
+      gsap.from('.chip', { y: 20, opacity: 0, duration: 0.9, ease, stagger: 0.06, scrollTrigger: { trigger: '.chips', start: 'top 92%', once: true } })
+      // Experience: rule draws across, rows slide in one after another.
+      gsap.from('.xp-list', { '--rule': 0, duration: 1.4, ease, scrollTrigger: { trigger: '.xp-list', start: 'top 85%', once: true } })
+      ScrollTrigger.batch('.xp-row', {
+        start: 'top 90%', once: true,
+        onEnter: (rows) => gsap.fromTo(rows, { x: -60, opacity: 0 }, { x: 0, opacity: 1, duration: 1.1, ease, stagger: 0.1, clearProps: 'transform' }),
+      })
+      gsap.set('.xp-row', { opacity: 0 })
+      gsap.from('.certs', { y: 50, opacity: 0, duration: 1.1, ease, scrollTrigger: { trigger: '.certs', start: 'top 92%', once: true } })
 
       // Project frames: image moves slower than its frame.
       gsap.utils.toArray('.work-media img').forEach((img) => {
@@ -133,23 +134,13 @@ function Hero() {
       </figure>
       <div className="hero-foot">
         <p className="lede">
-          Hi, I&rsquo;m Aryan. I study Instrumentation &amp; Control at {me.college.split(',')[0]} (class of {me.year}),
-          run a small industrial-AI startup, and build tools that turn messy data into decisions.
+          Hi, I&rsquo;m Aryan, an Instrumentation &amp; Control Engineering student at {me.college.split(',')[0]} (class of {me.year}).
+          I run a small industrial-AI startup and build tools that turn messy data into decisions.
         </p>
         <a href="#work" className="link-under">See the work <Arrow /></a>
         <a href="#work" className="scroll-cue"><span>Scroll to explore</span><i><Arrow dir="down" size={22} /></i></a>
       </div>
     </section>
-  )
-}
-
-function Marquee() {
-  const items = ['Kelvin Forward', 'Voice of Customer Copilot', 'EY', 'Tech Mahindra', 'Indian Space Lab', 'Movie Recommender', 'Medsetu', 'Debate Society']
-  const row = items.flatMap((t, i) => [<span key={t}>{t}</span>, <Ring key={`r${i}`} />])
-  return (
-    <div className="marquee" aria-hidden="true">
-      <div className="marquee-track">{row}{row.map((el, i) => <span key={`d${i}`} className="dup">{el}</span>)}</div>
-    </div>
   )
 }
 
@@ -185,7 +176,7 @@ function Work() {
             </L>
             <div className="work-body">
               <div className="work-title">
-                <h3>{p.name}</h3>
+                <h3>{p.logo && <img className="title-logo" src={p.logo} alt="" />}{p.name}</h3>
                 <span className="year">{p.year}</span>
               </div>
               <p className="one-liner">{p.oneLiner}</p>
@@ -251,14 +242,14 @@ function Experience() {
         <p className="side-note">Four internships, one startup, zero coffee runs (mostly).</p>
       </div>
       <ol className="xp-list">
-        <li className="xp-row reveal founder">
-          <div className="xp-logo"><Ring /></div>
+        <li className="xp-row founder">
+          <div className="xp-logo"><img src="./logos/kelvin-forward-mark.svg" alt="Kelvin Forward logo" /></div>
           <div className="xp-main"><h3>Kelvin Forward</h3><p className="xp-role">Founder</p></div>
           <p className="xp-what">Industrial ML for MSMEs: a 1&ndash;10 minute head start on boiler steam temperature, built on the plant&rsquo;s existing sensors. In customer validation with two prospective clients.</p>
           <p className="xp-when">Jul 2026 &mdash; now</p>
         </li>
         {experience.map((x) => (
-          <li key={x.org + x.role} className="xp-row reveal">
+          <li key={x.org + x.role} className="xp-row">
             <div className="xp-logo"><img src={x.logo} alt={`${x.org.split(' ·')[0]} logo`} /></div>
             <div className="xp-main"><h3>{x.org}</h3><p className="xp-role">{x.role}</p></div>
             <p className="xp-what">{x.what}</p>
@@ -293,7 +284,7 @@ function Extras() {
           {certificates.map((c) => {
             const inner = (
               <>
-                <Spark />
+                <img className="cert-logo" src={c.logo} alt={`${c.issuer.split(' ·')[0]} logo`} />
                 <strong>{c.name}</strong>
                 <span>{c.issuer}</span>
                 <time>{c.when}</time>
@@ -353,7 +344,6 @@ export default function App() {
       <Header />
       <main>
         <Hero />
-        <Marquee />
         <Work />
         <About />
         <Experience />
