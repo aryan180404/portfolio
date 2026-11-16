@@ -83,6 +83,7 @@ export const projects = [
       'An ECG prototype with careful grounding for high-fidelity ADC readings, EMF/EMI mitigation, a Python script streaming live data over the web, and a frontend for doctors and patients. Tested with 8–10 users.',
     tags: ['Arduino', 'Electronics', 'Data streaming', 'Web'],
     links: [
+      { label: 'Project site', href: 'https://medsetuecg.vercel.app' },
       { label: 'Live dashboard', href: 'https://medsetuecg.vercel.app/dashboard.html' },
       { label: 'GitHub', href: 'https://github.com/aryan180404/MEDSETU' },
       { label: 'Code map', href: './maps/medsetu.html' },

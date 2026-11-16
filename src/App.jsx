@@ -100,6 +100,69 @@ function useMotion() {
   }, [])
 }
 
+// Nav "Resume" item: plays a short download sequence, then saves the PDF.
+function ResumeButton() {
+  const [state, setState] = useState('idle') // idle | going | done
+  const ref = useRef(null)
+  const timers = useRef([])
+  useEffect(() => () => timers.current.forEach(clearTimeout), [])
+  const later = (fn, ms) => timers.current.push(setTimeout(fn, ms))
+
+  const burst = (el) => {
+    const colors = ['#2a26ee', '#151515', '#2a26ee', '#c8f031']
+    for (let i = 0; i < 12; i++) {
+      const b = document.createElement('i')
+      const angle = (Math.PI * 2 * i) / 12 + Math.random() * 0.4
+      const dist = 46 + Math.random() * 34
+      b.className = 'rp-bit' + (i % 3 === 0 ? ' ring' : '')
+      b.style.setProperty('--dx', `${Math.cos(angle) * dist}px`)
+      b.style.setProperty('--dy', `${Math.sin(angle) * dist}px`)
+      b.style.setProperty('--c', colors[i % colors.length])
+      el.appendChild(b)
+      later(() => b.remove(), 900)
+    }
+  }
+
+  const onClick = (e) => {
+    if (state !== 'idle') { e.preventDefault(); return }
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return // plain download
+    e.preventDefault()
+    setState('going')
+    burst(ref.current)
+    later(() => {
+      const a = document.createElement('a')
+      a.href = me.resume
+      a.download = 'Aryan-Agarwal-Resume.pdf'
+      document.body.appendChild(a)
+      a.click()
+      a.remove()
+      setState('done')
+    }, 750)
+    later(() => setState('idle'), 2600)
+  }
+
+  return (
+    <a ref={ref} href={me.resume} download="Aryan-Agarwal-Resume.pdf" className={`resume-pill is-${state}`} onClick={onClick}>
+      <span className="rp-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path className="rp-tray" d="M4 14v5h16v-5" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+          <g className="rp-arrow"><path d="M12 3v10m-4.5-4.5L12 13l4.5-4.5" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" /></g>
+          <path className="rp-check" d="M7.5 9.5l3 3 6-6.5" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" pathLength="1" />
+        </svg>
+      </span>
+      <span className="rp-label">
+        <span className="rp-roll">
+          <span>Resume</span>
+          <span aria-hidden="true">Fetching&hellip;</span>
+          <span aria-hidden="true">Saved!</span>
+        </span>
+      </span>
+      <span className="rp-sheet" aria-hidden="true" />
+      <span className="sr-only" aria-live="polite">{state === 'done' ? 'Resume downloaded' : ''}</span>
+    </a>
+  )
+}
+
 const NAV = [['work', 'Work'], ['experience', 'Experience'], ['about', 'About']]
 
 function Header() {
@@ -137,7 +200,7 @@ function Header() {
               {label}{id === 'work' && <sup>({String(projects.length).padStart(2, '0')})</sup>}
             </a>
           ))}
-          <a href={me.resume} download="Aryan-Agarwal-Resume.pdf" className="nav-link nav-resume">Resume <Arrow dir="download" size={16} /></a>
+          <ResumeButton />
           <a href="#contact" className={`btn-outline ${active === 'contact' ? 'is-active' : ''}`}>Let&rsquo;s talk <Arrow /></a>
         </nav>
       </div>
@@ -165,10 +228,7 @@ function Hero() {
           Hi, I&rsquo;m Aryan, an Instrumentation &amp; Control Engineering student at {me.college.split(',')[0]} (class of {me.year}).
           I run a small industrial-AI startup and build tools that turn messy data into decisions.
         </p>
-        <div className="hero-ctas">
-          <a href="#work" className="link-under">See the work <Arrow /></a>
-          <a href={me.resume} download="Aryan-Agarwal-Resume.pdf" className="btn-solid">Download resume <Arrow dir="download" /></a>
-        </div>
+        <a href="#work" className="link-under">See the work <Arrow /></a>
         <a href="#work" className="scroll-cue"><span>Scroll to explore</span><i><Arrow dir="down" size={22} /></i></a>
       </div>
     </section>
