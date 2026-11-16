@@ -5,6 +5,7 @@ export const me = {
   name: 'Aryan Agarwal',
   fullName: 'Aryan Nilesh Agarwal',
   photo: './aryan.jpg',
+  resume: './Aryan-Agarwal-Resume.pdf',
   college: 'CoEP Technological University, Pune',
   degree: 'B.Tech, Instrumentation & Control',
   year: '2027',

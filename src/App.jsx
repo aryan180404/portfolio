@@ -7,7 +7,7 @@ import { me, projects, smallerWork, experience, leadership, awards, certificates
 gsap.registerPlugin(ScrollTrigger)
 
 const Arrow = ({ dir = 'ne', size = 18 }) => {
-  const d = dir === 'down' ? 'M12 4v15m0 0-6-6m6 6 6-6' : 'M7 17 17 7m0 0H8m9 0v9'
+  const d = dir === 'down' ? 'M12 4v15m0 0-6-6m6 6 6-6' : dir === 'download' ? 'M12 3v12m0 0-5-5m5 5 5-5M4 20h16' : 'M7 17 17 7m0 0H8m9 0v9'
   return (
     <svg className="ico" width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <path d={d} stroke="currentColor" strokeWidth="1.8" strokeLinecap="square" />
@@ -137,6 +137,7 @@ function Header() {
               {label}{id === 'work' && <sup>({String(projects.length).padStart(2, '0')})</sup>}
             </a>
           ))}
+          <a href={me.resume} download="Aryan-Agarwal-Resume.pdf" className="nav-link nav-resume">R&eacute;sum&eacute; <Arrow dir="download" size={16} /></a>
           <a href="#contact" className={`btn-outline ${active === 'contact' ? 'is-active' : ''}`}>Let&rsquo;s talk <Arrow /></a>
         </nav>
       </div>
@@ -164,7 +165,10 @@ function Hero() {
           Hi, I&rsquo;m Aryan, an Instrumentation &amp; Control Engineering student at {me.college.split(',')[0]} (class of {me.year}).
           I run a small industrial-AI startup and build tools that turn messy data into decisions.
         </p>
-        <a href="#work" className="link-under">See the work <Arrow /></a>
+        <div className="hero-ctas">
+          <a href="#work" className="link-under">See the work <Arrow /></a>
+          <a href={me.resume} download="Aryan-Agarwal-Resume.pdf" className="btn-solid">Download r&eacute;sum&eacute; <Arrow dir="download" /></a>
+        </div>
         <a href="#work" className="scroll-cue"><span>Scroll to explore</span><i><Arrow dir="down" size={22} /></i></a>
       </div>
     </section>
@@ -395,6 +399,7 @@ function Contact() {
             <button className="copy" onClick={copy} aria-live="polite">{copied ? 'Copied' : 'Copy'}</button>
           </li>
           <li><span className="muted">College</span><a href={`mailto:${me.emailCollege}`}>{me.emailCollege}</a></li>
+          <li><span className="muted">R&eacute;sum&eacute;</span><a href={me.resume} download="Aryan-Agarwal-Resume.pdf">Download PDF <Arrow dir="download" size={15} /></a></li>
           <li><span className="muted">Phone</span><a href={me.phoneHref}>{me.phone}</a></li>
           <li><span className="muted">LinkedIn</span><L href={me.linkedin}>in/aryan180404 <Arrow size={15} /></L></li>
           <li><span className="muted">GitHub</span><L href={me.github}>aryan180404 <Arrow size={15} /></L></li>

@@ -106,6 +106,17 @@ html { scrollbar-color: var(--ink) var(--paper-2); }
 .btn-outline:hover::before { transform: translateY(0); }
 .btn-outline:hover .ico, .link-under:hover .ico { transform: translate(3px, -3px); }
 
+/* ---------- Résumé ---------- */
+.nav-resume { display: inline-flex; align-items: center; gap: 8px; }
+.nav-resume:hover .ico, .btn-solid:hover .ico, .contact-list a:hover .ico { transform: translateY(2px); }
+.hero-ctas { display: flex; align-items: center; gap: 28px; flex-wrap: wrap; }
+.btn-solid {
+  display: inline-flex; align-items: center; gap: 16px; padding: 14px 24px;
+  background: var(--blue); color: var(--paper); font-size: 17px; border: 1px solid var(--blue);
+  transition: background-color 0.35s var(--ease), color 0.35s var(--ease), box-shadow 0.35s var(--ease);
+}
+.btn-solid:hover { background: var(--blue-deep); box-shadow: 0 12px 24px -12px rgba(42, 38, 238, 0.6); }
+
 /* ---------- Hero ---------- */
 .hero { position: relative; padding-top: calc(96px + clamp(48px, 9vh, 110px)); min-height: 100svh; display: flex; flex-direction: column; }
 .hero-title {
@@ -294,6 +305,7 @@ html { scrollbar-color: var(--ink) var(--paper-2); }
 @media (max-width: 860px) {
   body { font-size: 16px; }
   .nav-link { display: none; }
+  .hero-ctas { gap: 18px; }
   .field-row { grid-template-columns: 1fr; }
   .brand { font-size: 19px; gap: 8px; }
   .brand sup { display: none; }
