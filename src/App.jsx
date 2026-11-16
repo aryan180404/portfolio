@@ -55,12 +55,13 @@ function useMotion() {
       const ease = 'expo.out'
       // The one authored moment: the hero headline rises out of its own line boxes.
       gsap.from('.hero .hero-line > span', { yPercent: 105, duration: 1.4, ease, stagger: 0.12, delay: 0.15 })
-      gsap.from('.sticker', { rotate: 18, y: 60, opacity: 0, duration: 1.6, ease, delay: 0.5 })
+      gsap.from('.sticker', { rotate: 10, y: 60, opacity: 0, duration: 1.6, ease, delay: 0.5 })
       gsap.from('.hero-foot > *', { y: 24, opacity: 0, duration: 1.1, ease, stagger: 0.08, delay: 0.7 })
 
       // Layers: sticker drifts against the headline on scroll.
-      gsap.to('.sticker', { yPercent: -45, rotate: 2, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } })
-      gsap.to('.hero-title', { yPercent: 18, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } })
+      // Outer layer only: it never plays the entrance, so the start angle is always the resting one.
+      gsap.fromTo('.sticker-drift', { yPercent: 0, rotate: 0 }, { yPercent: -45, rotate: 6, ease: 'none', immediateRender: false, scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 0.6 } })
+      gsap.to('.hero-title', { yPercent: 18, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 0.6 } })
 
       // Section headings rise from below a mask.
       gsap.utils.toArray('.work-head').forEach((el) => {
@@ -123,12 +124,12 @@ function useMotion() {
         const photo = document.querySelector('.sticker img')
         if (hero && photo) {
           gsap.set(photo, { transformPerspective: 700 })
-          const rx = gsap.quickTo(photo, 'rotationX', { duration: 0.6, ease: 'power3.out' })
-          const ry = gsap.quickTo(photo, 'rotationY', { duration: 0.6, ease: 'power3.out' })
+          const rx = gsap.quickTo(photo, 'rotationX', { duration: 0.9, ease: 'power3.out' })
+          const ry = gsap.quickTo(photo, 'rotationY', { duration: 0.9, ease: 'power3.out' })
           hero.addEventListener('pointermove', (e) => {
             const r = hero.getBoundingClientRect()
-            ry(((e.clientX - r.left) / r.width - 0.5) * 12)
-            rx(-((e.clientY - r.top) / r.height - 0.5) * 10)
+            ry(((e.clientX - r.left) / r.width - 0.5) * 8)
+            rx(-((e.clientY - r.top) / r.height - 0.5) * 6)
           })
           hero.addEventListener('pointerleave', () => { rx(0); ry(0) })
         }
@@ -268,14 +269,16 @@ function Hero() {
         <span className="hero-line"><span>Builds models.</span></span>
         <span className="hero-line"><span>Wins arguments.</span></span>
       </h1>
-      <figure className="sticker">
-        <img src={me.photo} alt="Aryan Agarwal on a beach at dusk, in a white shirt" width="800" height="800" />
-        <figcaption>
-          <span>Good data</span>
-          <Ring />
-          <span>Better questions</span>
-        </figcaption>
-      </figure>
+      <div className="sticker-drift">
+        <figure className="sticker">
+          <img src={me.photo} alt="Aryan Agarwal on a beach at dusk, in a white shirt" width="800" height="800" />
+          <figcaption>
+            <span>Good data</span>
+            <Ring />
+            <span>Better questions</span>
+          </figcaption>
+        </figure>
+      </div>
       <div className="hero-foot">
         <p className="lede">
           Hi, I&rsquo;m Aryan, an Instrumentation &amp; Control Engineering student at {me.college.split(',')[0]} (class of {me.year}).
