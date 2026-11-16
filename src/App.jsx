@@ -91,6 +91,58 @@ function useMotion() {
         gsap.from(el, { y: 36, opacity: 0, duration: 1.1, ease, scrollTrigger: { trigger: el, start: 'top 88%' } })
       })
       gsap.from('.contact-title .hero-line > span', { yPercent: 105, duration: 1.3, ease, stagger: 0.1, scrollTrigger: { trigger: '.contact-title', start: 'top 90%', once: true } })
+
+      // State: a hairline in the header fills as you read down the page.
+      gsap.to('.read-progress', { scaleX: 1, ease: 'none', scrollTrigger: { start: 0, end: 'max', scrub: 0.3 } })
+      // The logo ring turns with the scroll.
+      gsap.to('.brand .ring', { rotate: 360, ease: 'none', scrollTrigger: { start: 0, end: 'max', scrub: 1 } })
+
+      // Project text arrives after its picture: title, one-liner, detail, tags, links.
+      gsap.utils.toArray('.work-card').forEach((card) => {
+        gsap.from(card.querySelectorAll('.work-body > *'), { y: 28, opacity: 0, duration: 1, ease, stagger: 0.07, scrollTrigger: { trigger: card, start: 'top 80%', once: true } })
+      })
+      gsap.from('.smaller li', { y: 24, opacity: 0, duration: 0.9, ease, stagger: 0.08, scrollTrigger: { trigger: '.smaller', start: 'top 85%', once: true } })
+
+      // About: headline wipes up line by line, then the skills fall into place.
+      gsap.from('.about-title', { clipPath: 'inset(0 0 100% 0)', y: 40, duration: 1.4, ease, scrollTrigger: { trigger: '.about-title', start: 'top 80%', once: true } })
+      gsap.from('.about-copy > *', { y: 30, opacity: 0, duration: 1, ease, stagger: 0.1, scrollTrigger: { trigger: '.about-copy', start: 'top 82%', once: true } })
+      gsap.from('.about-row li', { y: 18, opacity: 0, duration: 0.8, ease, stagger: 0.06, scrollTrigger: { trigger: '.about-row', start: 'top 92%', once: true } })
+      gsap.from('.skills span', { y: 14, opacity: 0, duration: 0.7, ease, stagger: 0.035, scrollTrigger: { trigger: '.skills', start: 'top 94%', once: true } })
+
+      // Lists in the extras and contact sections arrive one row at a time.
+      ;['.plain-list', '.award-list', '.contact-list'].forEach((sel) => {
+        gsap.from(`${sel} > li`, { y: 24, opacity: 0, duration: 0.9, ease, stagger: 0.07, scrollTrigger: { trigger: sel, start: 'top 88%', once: true } })
+      })
+      gsap.from('.extras .display-sm', { y: 40, opacity: 0, duration: 1.1, ease, stagger: 0.1, scrollTrigger: { trigger: '.extras', start: 'top 85%', once: true } })
+      gsap.from('.contact-form > *', { y: 24, opacity: 0, duration: 0.9, ease, stagger: 0.07, scrollTrigger: { trigger: '.contact-form', start: 'top 90%', once: true } })
+
+      // Desktop pointers only: the photo tilts toward the cursor, and the
+      // two round/outlined calls to action lean toward it (magnetic).
+      if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        const hero = document.querySelector('.hero')
+        const photo = document.querySelector('.sticker img')
+        if (hero && photo) {
+          gsap.set(photo, { transformPerspective: 700 })
+          const rx = gsap.quickTo(photo, 'rotationX', { duration: 0.6, ease: 'power3.out' })
+          const ry = gsap.quickTo(photo, 'rotationY', { duration: 0.6, ease: 'power3.out' })
+          hero.addEventListener('pointermove', (e) => {
+            const r = hero.getBoundingClientRect()
+            ry(((e.clientX - r.left) / r.width - 0.5) * 12)
+            rx(-((e.clientY - r.top) / r.height - 0.5) * 10)
+          })
+          hero.addEventListener('pointerleave', () => { rx(0); ry(0) })
+        }
+        document.querySelectorAll('.site-header .btn-outline, .scroll-cue i').forEach((el) => {
+          const mx = gsap.quickTo(el, 'x', { duration: 0.5, ease: 'power3.out' })
+          const my = gsap.quickTo(el, 'y', { duration: 0.5, ease: 'power3.out' })
+          el.addEventListener('pointermove', (e) => {
+            const r = el.getBoundingClientRect()
+            mx((e.clientX - r.left - r.width / 2) * 0.25)
+            my((e.clientY - r.top - r.height / 2) * 0.35)
+          })
+          el.addEventListener('pointerleave', () => { mx(0); my(0) })
+        })
+      }
     })
     // Fonts change line heights after first layout; recompute trigger positions.
     const refresh = () => ScrollTrigger.refresh()
@@ -189,6 +241,7 @@ function Header() {
   }, [])
   return (
     <header className={`site-header ${scrolled ? 'is-scrolled' : ''} ${hidden ? 'is-hidden' : ''}`}>
+      <span className="read-progress" aria-hidden="true" />
       <div className="bar wrap">
         <a href="#top" className="brand" aria-label="Aryan Agarwal, back to top">
           <Ring />
@@ -280,7 +333,7 @@ function Work() {
           </article>
         ))}
       </div>
-      <div className="smaller reveal">
+      <div className="smaller">
         <h3>Also on the workbench</h3>
         <ul>
           {smallerWork.map((s) => (
@@ -355,7 +408,7 @@ function Experience() {
 function Extras() {
   return (
     <section className="extras wrap">
-      <div className="extras-col reveal">
+      <div className="extras-col">
         <h2 className="display-sm">Off the timetable</h2>
         <ul className="plain-list">
           {leadership.map((l) => (
@@ -363,7 +416,7 @@ function Extras() {
           ))}
         </ul>
       </div>
-      <div className="extras-col reveal">
+      <div className="extras-col">
         <h2 className="display-sm">Trophy shelf</h2>
         <ul className="award-list">
           {awards.map((a) => (
