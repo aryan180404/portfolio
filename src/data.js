@@ -16,6 +16,10 @@ export const me = {
   linkedin: 'https://www.linkedin.com/in/aryan180404',
   github: 'https://github.com/aryan180404',
   languages: 'English, Hindi, Marathi',
+  // Contact form → your inbox. Get a free access key at https://web3forms.com
+  // (enter aryan180404@gmail.com, the key arrives by email) and paste it here.
+  // Left empty, the form opens the visitor's mail app instead.
+  contactFormKey: '',
 }
 
 export const projects = [
@@ -29,7 +33,7 @@ export const projects = [
     oneLiner: 'Tells a boiler operator the steam temperature one to ten minutes before it moves.',
     detail:
       'My startup, grown out of my B.Tech project. Machine learning on the sensors a plant already has, built for the small and mid-sized manufacturers who can’t afford big process-control suites. 14 models benchmarked on 17,000+ unseen readings; the hybrids cut 1, 5 and 10-minute error by 75%, 59% and 37% against persistence. Presented to a panel of six professors; now in customer validation with two industrial clients.',
-    tags: ['Python', 'XGBoost', 'LightGBM', 'Next.js'],
+    tags: ['Machine learning', 'Data science', 'Forecasting', 'Web'],
     links: [
       { label: 'Live site', href: 'https://kelvin-forward.vercel.app' },
       { label: 'Pitch deck', href: './decks/kelvin-forward-deck.html' },
@@ -45,7 +49,7 @@ export const projects = [
     oneLiner: 'Turns thousands of messy reviews, tickets and posts into the five problems a PM should fix first.',
     detail:
       'An LLM copilot that cleans and unifies app reviews, support tickets and surveys, then clusters and sentiment-scores 1,000+ entries to rank pain points and the top five churn drivers. The model labels; code counts; every insight links back to real reviews. Cut analysis to about 10 minutes on free-tier Gemini.',
-    tags: ['Python', 'Gemini', 'Streamlit', 'Product'],
+    tags: ['Machine learning', 'Data cleaning', 'LLMs', 'Product'],
     links: [
       { label: 'Live app', href: 'https://aryansvoc.streamlit.app' },
       { label: 'Deck', href: './decks/voc-copilot-deck.html' },
@@ -61,7 +65,7 @@ export const projects = [
     oneLiner: 'Name a film you love and get five more that share its genres, cast, crew and DNA.',
     detail:
       'Content-based recommendations over the TMDB 5000 dataset. Bag-of-Words vectorisation turns metadata into a feature matrix; nearest neighbours with cosine similarity pick the five closest films. Runs fully static on GitHub Pages.',
-    tags: ['NLP', 'scikit-learn', 'Pandas'],
+    tags: ['Machine learning', 'NLP', 'Data science'],
     links: [
       { label: 'Live demo', href: 'https://aryan180404.github.io/Movie-recommender' },
       { label: 'GitHub', href: 'https://github.com/aryan180404/Movie-recommender' },
@@ -77,7 +81,7 @@ export const projects = [
     oneLiner: 'An Arduino ECG that streams a clean heartbeat to the browser in real time.',
     detail:
       'An ECG prototype with careful grounding for high-fidelity ADC readings, EMF/EMI mitigation, a Python script streaming live data over the web, and a frontend for doctors and patients. Tested with 8–10 users.',
-    tags: ['Arduino', 'Python', 'Electronics', 'Web'],
+    tags: ['Arduino', 'Electronics', 'Data streaming', 'Web'],
     links: [
       { label: 'Live dashboard', href: 'https://medsetuecg.vercel.app/dashboard.html' },
       { label: 'GitHub', href: 'https://github.com/aryan180404/MEDSETU' },
@@ -92,8 +96,8 @@ export const projects = [
     shot: './shots/boiler.jpg',
     oneLiner: 'Where Kelvin Forward started: a plant diagram that predicts its own steam.',
     detail:
-      'The B.Tech project behind the startup. Forecasts boiler outlet steam temperature 1, 5 and 10 minutes ahead from 35 sensor readings of a coal-fired boiler, comparing persistence, linear regression, random forest, XGBoost and LightGBM.',
-    tags: ['Forecasting', 'Python', 'JavaScript'],
+      'The B.Tech project behind the startup. Forecasts boiler outlet steam temperature 1, 5 and 10 minutes ahead from 35 sensor readings of a coal-fired boiler, comparing a persistence baseline against linear and tree-based machine learning models.',
+    tags: ['Machine learning', 'Forecasting', 'Data science'],
     links: [{ label: 'GitHub', href: 'https://github.com/aryan180404/Boiler_ese' }],
   },
 ]
@@ -138,7 +142,7 @@ export const leadership = [
   {
     title: 'Convenor, COEP English Debate Society',
     when: 'Apr 2025 — Apr 2026',
-    what: 'Ran the flagship debate competition with a 30+ person team. Raised ₹2 lakh: revenue up 100%, profit up 200%, outside participation up 200%.',
+    what: 'Ran the flagship debate competition with a 30+ person team and trained students in public speaking and argument. Raised ₹2 lakh: revenue up 100%, profit up 200%, outside participation up 200%.',
   },
   { title: 'Member, COEP Octane Racing', when: 'Formula Student', what: 'Electrical systems of the race car, mainly the Battery Management System.' },
   { title: 'Media Head, COEP ICESA', when: 'Instrumentation society', what: 'Headed publication and documentation of the society’s events.' },
@@ -157,4 +161,4 @@ export const certificates = [
   { name: 'Google Data Analytics', issuer: 'Google · Coursera', when: 'June 2026', logo: './logos/google.png', verifyUrl: '' },
 ]
 
-export const skills = ['Python', 'SQL', 'Machine learning', 'Pandas', 'NumPy', 'scikit-learn', 'Tableau', 'Data cleaning', 'Jupyter', 'MS Office', 'Stakeholder management', 'Client communication', 'Project management']
+export const skills = ['Python', 'SQL', 'Machine learning', 'Data science', 'Data cleaning', 'Data analysis', 'Tableau', 'MS Office', 'Stakeholder management', 'Client communication', 'Project management']

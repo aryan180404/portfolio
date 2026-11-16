@@ -46,7 +46,7 @@ function useMotion() {
       document.querySelectorAll('a[href^="#"]').forEach((a) =>
         a.addEventListener('click', (e) => {
           const id = a.getAttribute('href')
-          if (id.length > 1) { e.preventDefault(); lenis.scrollTo(id, { offset: -10, duration: 1.4 }) }
+          if (id.length > 1) { e.preventDefault(); lenis.scrollTo(id, { offset: -80, duration: 1.4 }) }
         })
       )
     }
@@ -100,19 +100,46 @@ function useMotion() {
   }, [])
 }
 
+const NAV = [['work', 'Work'], ['experience', 'Experience'], ['about', 'About']]
+
 function Header() {
+  const [scrolled, setScrolled] = useState(false)
+  const [hidden, setHidden] = useState(false)
+  const [active, setActive] = useState('')
+  useEffect(() => {
+    let last = window.scrollY
+    const onScroll = () => {
+      const y = window.scrollY
+      setScrolled(y > 24)
+      setHidden(y > 480 && y > last + 4 ? true : y < last - 4 ? false : (h) => h)
+      last = y
+    }
+    // Highlight the section currently in view.
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => e.isIntersecting && setActive(e.target.id)),
+      { rootMargin: '-45% 0px -50% 0px' }
+    )
+    ;['top', ...NAV.map(([id]) => id), 'contact'].forEach((id) => { const el = document.getElementById(id); if (el) io.observe(el) })
+    window.addEventListener('scroll', onScroll, { passive: true })
+    onScroll()
+    return () => { window.removeEventListener('scroll', onScroll); io.disconnect() }
+  }, [])
   return (
-    <header className="site-header wrap">
-      <a href="#top" className="brand" aria-label="Aryan Agarwal, back to top">
-        <Ring />
-        <span>aryan agarwal</span><sup>&deg;K</sup>
-      </a>
-      <nav aria-label="Primary">
-        <a href="#work">Work <sup>({String(projects.length).padStart(2, '0')})</sup></a>
-        <a href="#experience">Experience</a>
-        <a href="#about">About</a>
-        <a href="#contact" className="btn-outline">Let&rsquo;s talk <Arrow /></a>
-      </nav>
+    <header className={`site-header ${scrolled ? 'is-scrolled' : ''} ${hidden ? 'is-hidden' : ''}`}>
+      <div className="bar wrap">
+        <a href="#top" className="brand" aria-label="Aryan Agarwal, back to top">
+          <Ring />
+          <span>aryan agarwal</span><sup>&deg;K</sup>
+        </a>
+        <nav aria-label="Primary">
+          {NAV.map(([id, label]) => (
+            <a key={id} href={`#${id}`} className={`nav-link ${active === id ? 'is-active' : ''}`} aria-current={active === id ? 'true' : undefined}>
+              {label}{id === 'work' && <sup>({String(projects.length).padStart(2, '0')})</sup>}
+            </a>
+          ))}
+          <a href="#contact" className={`btn-outline ${active === 'contact' ? 'is-active' : ''}`}>Let&rsquo;s talk <Arrow /></a>
+        </nav>
+      </div>
     </header>
   )
 }
@@ -238,8 +265,8 @@ function Experience() {
   return (
     <section className="experience wrap" id="experience">
       <div className="work-head">
-        <h2 className="display-md">Where I&rsquo;ve <span className="blue">clocked in.</span></h2>
-        <p className="side-note">Four internships, one startup, zero coffee runs (mostly).</p>
+        <h2 className="display-md">Where I&rsquo;ve <span className="blue">worked.</span></h2>
+        <p className="side-note">Four internships, one startup.</p>
       </div>
       <ol className="xp-list">
         <li className="xp-row founder">
@@ -301,6 +328,51 @@ function Extras() {
   )
 }
 
+function ContactForm() {
+  const [status, setStatus] = useState('idle') // idle | sending | sent | error
+  const onSubmit = async (e) => {
+    e.preventDefault()
+    const form = e.currentTarget
+    const data = Object.fromEntries(new FormData(form))
+    if (data.botcheck) return
+    if (!me.contactFormKey) {
+      const body = `${data.message}\n\n— ${data.name} (${data.email})`
+      window.location.href = `mailto:${me.emailPrimary}?subject=${encodeURIComponent(`Portfolio: hello from ${data.name}`)}&body=${encodeURIComponent(body)}`
+      return
+    }
+    setStatus('sending')
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ access_key: me.contactFormKey, subject: `Portfolio: message from ${data.name}`, from_name: 'Portfolio contact form', replyto: data.email, ...data }),
+      })
+      const json = await res.json()
+      if (!json.success) throw new Error(json.message)
+      setStatus('sent'); form.reset()
+    } catch { setStatus('error') }
+  }
+  return (
+    <form className="contact-form" onSubmit={onSubmit}>
+      <div className="field-row">
+        <label><span>Your name</span><input name="name" required autoComplete="name" /></label>
+        <label><span>Your email</span><input name="email" type="email" required autoComplete="email" /></label>
+      </div>
+      <label><span>Message</span><textarea name="message" rows="4" required /></label>
+      <input type="checkbox" name="botcheck" className="hp" tabIndex="-1" autoComplete="off" aria-hidden="true" />
+      <div className="form-foot">
+        <button type="submit" className="btn-outline" disabled={status === 'sending'}>
+          {status === 'sending' ? 'Sending…' : 'Send message'} <Arrow />
+        </button>
+        <p className={`form-status ${status}`} role="status">
+          {status === 'sent' && 'Thanks, it\u2019s in my inbox. I\u2019ll reply soon.'}
+          {status === 'error' && <>That didn&rsquo;t go through. Email me directly at <a href={`mailto:${me.emailPrimary}`}>{me.emailPrimary}</a>.</>}
+        </p>
+      </div>
+    </form>
+  )
+}
+
 function Contact() {
   const [copied, setCopied] = useState(false)
   const copy = async () => {
@@ -313,7 +385,10 @@ function Contact() {
         <span className="hero-line"><span className="blue">talk.</span></span>
       </h2>
       <div className="contact-grid">
-        <p className="lede">Internships, full-time roles, a pilot for Kelvin Forward, or a debate motion you feel strongly about. My inbox is open.</p>
+        <div>
+          <p className="lede">Internships, full-time roles, a pilot for Kelvin Forward, or a debate motion you feel strongly about. My inbox is open.</p>
+          <ContactForm />
+        </div>
         <ul className="contact-list">
           <li>
             <span className="muted">Email</span>

@@ -12,6 +12,14 @@ All text, links, projects, internships, awards and certificates live in **`src/d
 - Photo: `public/aryan.jpg`. Screenshots: `public/shots/`.
 - Decks: `public/decks/` (Kelvin Forward pitch, VoC Copilot deck). Code maps: `public/maps/`.
 
+## Contact form → your Gmail
+The "Let's talk" form sends messages to your inbox through Web3Forms (free, no backend).
+1. Go to https://web3forms.com, enter `aryan180404@gmail.com`, and click **Create Access Key**.
+2. Copy the key from the email they send you.
+3. Paste it into `contactFormKey` in `src/data.js`, then commit. Vercel redeploys on its own.
+
+Until a key is set, the form opens the visitor's mail app with the message pre-filled, addressed to you.
+
 ## Develop / rebuild
 ```bash
 npm install
